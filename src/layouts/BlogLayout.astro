@@ -1,0 +1,86 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import Breadcrumbs from "@components/Breadcrumbs.astro";
+import TableOfContents from "@components/TableOfContents.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  publishedDate?: string;
+  category?: string;
+  tags?: string[];
+  readingTime?: string;
+  headings?: { depth: number; slug: string; text: string }[];
+}
+
+const { title, description, image, publishedDate, category, tags, readingTime, headings } =
+  Astro.props;
+---
+
+<BaseLayout title={title} description={description} image={image} type="article" publishedDate={publishedDate}>
+  <article class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <Breadcrumbs
+      items={[
+        { label: "Home", href: "/" },
+        { label: "Blog", href: "/blog" },
+        { label: title },
+      ]}
+    />
+
+    <header class="mb-12 mt-8">
+      <div class="flex items-center gap-3 mb-4">
+        {category && (
+          <span class="px-3 py-1 text-xs font-medium rounded-full bg-primary-500/10 text-primary-400 border border-primary-500/20">
+            {category}
+          </span>
+        )}
+        {readingTime && (
+          <span class="text-sm text-surface-400">{readingTime}</span>
+        )}
+      </div>
+
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-4">
+        {title}
+      </h1>
+
+      {description && (
+        <p class="text-lg text-surface-400 leading-relaxed">{description}</p>
+      )}
+
+      <div class="flex items-center gap-4 mt-6 text-sm text-surface-500">
+        {publishedDate && (
+          <time datetime={publishedDate}>
+            {new Date(publishedDate).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </time>
+        )}
+      </div>
+
+      {tags && tags.length > 0 && (
+        <div class="flex flex-wrap gap-2 mt-4">
+          {tags.map((tag) => (
+            <span class="px-2 py-0.5 text-xs rounded bg-surface-800 text-surface-400 border border-surface-700">
+              #{tag}
+            </span>
+          ))}
+        </div>
+      )}
+    </header>
+
+    <div class="lg:grid lg:grid-cols-[1fr_200px] lg:gap-12">
+      <div class="prose prose-invert prose-lg max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-primary-400 prose-a:no-underline hover:prose-a:underline prose-code:text-primary-300 prose-pre:bg-surface-900 prose-pre:border prose-pre:border-surface-800">
+        <slot />
+      </div>
+
+      {headings && headings.length > 0 && (
+        <aside class="hidden lg:block">
+          <TableOfContents headings={headings} />
+        </aside>
+      )}
+    </div>
+  </article>
+</BaseLayout>

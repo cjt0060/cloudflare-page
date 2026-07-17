@@ -1,0 +1,248 @@
+---
+title: "GCP Cloud Run vs GKE: Choosing the Right Compute Platform"
+description: "A practical comparison of Google Cloud Run and GKE for different workload patterns, with decision frameworks and real-world performance benchmarks."
+publishedDate: "2026-03-05"
+category: "GCP"
+tags: ["gcp", "cloud-run", "gke", "kubernetes", "serverless"]
+image: "/images/blog/gcp-compute.svg"
+draft: false
+---
+
+## Introduction
+
+Google Cloud Platform offers multiple compute options for containerized workloads. The two most popular — Cloud Run and GKE — serve different use cases but have overlapping capabilities. This article provides a practical framework for choosing between them.
+
+## Cloud Run: Serverless Containers
+
+Cloud Run is a fully managed platform that automatically scales containers from zero to thousands:
+
+```yaml
+# service.yaml for Cloud Run
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: api-service
+  annotations:
+    run.googleapis.com/ingress: all
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/minScale: "0"
+        autoscaling.knative.dev/maxScale: "100"
+        run.googleapis.com/cpu-throttling: "false"
+    spec:
+      containerConcurrency: 80
+      timeoutSeconds: 300
+      containers:
+        - image: gcr.io/project/api-service:latest
+          ports:
+            - containerPort: 8080
+          resources:
+            limits:
+              cpu: "2"
+              memory: 1Gi
+          env:
+            - name: DB_CONNECTION
+              valueFrom:
+                secretKeyRef:
+                  name: database-url
+                  key: latest
+```
+
+### Cloud Run Strengths
+
+- **Zero to hero in seconds** — scale from zero with cold starts under 1s
+- **No cluster management** — fully managed infrastructure
+- **Pay per request** — billed only for actual compute time
+- **Built-in HTTPS** — automatic TLS termination and custom domains
+- **Revision management** — traffic splitting for canary deployments
+
+### Cloud Run Terraform
+
+```hcl
+resource "google_cloud_run_v2_service" "api" {
+  name     = "api-service"
+  location = "us-central1"
+  ingress  = "INGRESS_TRAFFIC_ALL"
+
+  template {
+    scaling {
+      min_instance_count = 0
+      max_instance_count = 100
+    }
+
+    containers {
+      image = "gcr.io/${var.project_id}/api-service:${var.image_tag}"
+
+      ports {
+        container_port = 8080
+      }
+
+      resources {
+        limits = {
+          cpu    = "2"
+          memory = "1Gi"
+        }
+        cpu_idle = false
+      }
+
+      env {
+        name = "DATABASE_URL"
+        value_source {
+          secret_key_ref {
+            secret  = google_secret_manager_secret.db_url.secret_id
+            version = "latest"
+          }
+        }
+      }
+    }
+  }
+
+  traffic {
+    type    = "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"
+    percent = 100
+  }
+}
+```
+
+## GKE: Full Kubernetes Power
+
+GKE provides full Kubernetes with Google's managed control plane:
+
+```yaml
+# GKE workload deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-service
+  namespace: production
+spec:
+  replicas: 3
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: api-service
+  template:
+    metadata:
+      labels:
+        app: api-service
+    spec:
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app: api-service
+      containers:
+        - name: api
+          image: gcr.io/project/api-service:latest
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: 500m
+              memory: 512Mi
+            limits:
+              cpu: "2"
+              memory: 1Gi
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8080
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: api-service-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: api-service
+  minReplicas: 3
+  maxReplicas: 50
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+    - type: Pods
+      pods:
+        metric:
+          name: http_requests_per_second
+        target:
+          type: AverageValue
+          averageValue: "1000"
+```
+
+### GKE Strengths
+
+- **Full Kubernetes API** — any Kubernetes workload runs here
+- **Complex networking** — service mesh, network policies, multi-cluster
+- **Stateful workloads** — StatefulSets, persistent volumes, operators
+- **GPU/TPU support** — ML training and inference workloads
+- **Multi-tenant** — namespace isolation for multiple teams
+
+## Decision Framework
+
+| Criteria | Cloud Run | GKE |
+|----------|-----------|-----|
+| Startup time | < 1s cold start | Always running |
+| Min cost | $0 (scale to zero) | ~$200/mo (e2-medium nodes) |
+| Max concurrency | 1000 instances × 1000 req | Unlimited (node scaling) |
+| Request timeout | 60 min max | Unlimited |
+| Stateful workloads | No | Yes |
+| GPU support | No | Yes |
+| Service mesh | Limited | Full Istio/Anthos |
+| Operational burden | None | Medium-High |
+
+## When to Choose Cloud Run
+
+1. **HTTP APIs and microservices** with variable traffic
+2. **Event-driven processing** (Pub/Sub, Eventarc triggers)
+3. **Bursty workloads** that benefit from scale-to-zero
+4. **Small teams** without dedicated platform engineering
+5. **Cost-sensitive projects** with unpredictable traffic
+
+## When to Choose GKE
+
+1. **Complex microservice architectures** needing service mesh
+2. **Stateful applications** (databases, queues, caches)
+3. **ML/AI workloads** requiring GPU/TPU
+4. **Multi-tenant platforms** serving multiple teams
+5. **Long-running processes** exceeding Cloud Run timeout limits
+
+## Hybrid Architecture
+
+Many production systems combine both:
+
+```
+                    ┌─────────────────┐
+                    │   Cloud Load    │
+                    │    Balancer     │
+                    └────────┬────────┘
+                             │
+              ┌──────────────┼──────────────┐
+              │              │              │
+    ┌─────────▼──────┐ ┌────▼────┐ ┌──────▼──────────┐
+    │   Cloud Run    │ │   GKE   │ │   Cloud Run     │
+    │   (API Layer)  │ │ (Core   │ │   (Webhooks)    │
+    │   Stateless    │ │ Services)│ │   Event-driven  │
+    └────────────────┘ └─────────┘ └─────────────────┘
+```
+
+## Conclusion
+
+Cloud Run and GKE are complementary, not competing. Use Cloud Run for stateless, event-driven workloads that benefit from automatic scaling and minimal operational overhead. Use GKE when you need the full power of Kubernetes for complex orchestration, stateful workloads, or GPU compute. Many production architectures successfully combine both.
