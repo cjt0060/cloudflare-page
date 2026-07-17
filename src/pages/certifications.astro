@@ -1,0 +1,48 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import CertificationCard from "@components/CertificationCard.astro";
+import { certifications } from "@/data/certifications";
+
+const categories = [...new Set(certifications.map((c) => c.category))];
+---
+
+<BaseLayout title="Certifications" description="Professional cloud and infrastructure certifications — AWS, GCP, Azure, Kubernetes, Terraform.">
+  <section class="section-padding">
+    <div class="section-container">
+      <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <div class="mb-12">
+          <h1 class="text-4xl sm:text-5xl font-bold text-white tracking-tight">Certifications</h1>
+          <p class="mt-4 text-lg text-surface-400">
+            Professional certifications validating expertise across cloud platforms and infrastructure technologies.
+          </p>
+        </div>
+
+        <!-- Category filters (visual only) -->
+        <div class="flex flex-wrap gap-2 mb-10">
+          <span class="px-3 py-1.5 text-sm rounded-lg bg-primary-500/10 text-primary-400 border border-primary-500/20">
+            All ({certifications.length})
+          </span>
+          {categories.map((cat) => (
+            <span class="px-3 py-1.5 text-sm rounded-lg text-surface-400 border border-surface-700 hover:border-surface-600 transition-colors cursor-default">
+              {cat} ({certifications.filter((c) => c.category === cat).length})
+            </span>
+          ))}
+        </div>
+
+        <!-- Certifications Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {certifications.map((cert) => (
+            <CertificationCard
+              title={cert.title}
+              issuer={cert.issuer}
+              date={cert.date}
+              credentialUrl={cert.credentialUrl}
+              description={cert.description}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

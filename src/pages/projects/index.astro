@@ -1,0 +1,36 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import ProjectCard from "@components/ProjectCard.astro";
+import { projects } from "@/data/projects";
+---
+
+<BaseLayout title="Projects" description="Cloud engineering and platform projects — Kubernetes, AWS, Terraform, and more.">
+  <section class="section-padding">
+    <div class="section-container">
+      <div class="max-w-6xl mx-auto">
+        <!-- Header -->
+        <div class="mb-12">
+          <h1 class="text-4xl sm:text-5xl font-bold text-white tracking-tight">Projects</h1>
+          <p class="mt-4 text-lg text-surface-400 max-w-2xl">
+            A selection of cloud infrastructure and platform engineering projects. 
+            Each demonstrates different aspects of distributed systems design.
+          </p>
+        </div>
+
+        <!-- Projects Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {projects.map((project) => (
+            <ProjectCard
+              title={project.title}
+              description={project.description}
+              technologies={project.technologies.slice(0, 4)}
+              href={`/projects/${project.slug}`}
+              github={project.github}
+              demo={project.demo}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

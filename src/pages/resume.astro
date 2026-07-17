@@ -1,0 +1,145 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import Timeline from "@components/Timeline.astro";
+import TechBadge from "@components/TechBadge.astro";
+import CertificationCard from "@components/CertificationCard.astro";
+import { certifications } from "@/data/certifications";
+
+const experience = [
+  {
+    title: "Senior Cloud Engineer",
+    company: "Tech Company Inc.",
+    date: "2022 – Present",
+    description:
+      "Lead cloud platform engineering for a multi-cloud environment serving 50M+ users. Design and implement Kubernetes-based platforms, GitOps pipelines, and observability solutions. Reduced infrastructure costs by 40% through automated optimization.",
+    technologies: ["AWS", "Kubernetes", "Terraform", "Go", "Prometheus", "ArgoCD"],
+  },
+  {
+    title: "Cloud Engineer",
+    company: "Cloud Solutions Corp.",
+    date: "2020 – 2022",
+    description:
+      "Designed and maintained production infrastructure on AWS. Built CI/CD pipelines, implemented IaC practices, and established monitoring standards. Managed migration of legacy workloads to containerized deployments.",
+    technologies: ["AWS", "Docker", "Terraform", "Python", "Jenkins", "CloudWatch"],
+  },
+  {
+    title: "DevOps Engineer",
+    company: "Startup Labs",
+    date: "2018 – 2020",
+    description:
+      "Built and maintained CI/CD infrastructure. Implemented configuration management, automated deployments, and infrastructure monitoring. Reduced deployment time from hours to minutes.",
+    technologies: ["AWS", "Docker", "Ansible", "Python", "GitHub Actions", "Datadog"],
+  },
+  {
+    title: "Systems Engineer",
+    company: "Enterprise Systems Inc.",
+    date: "2016 – 2018",
+    description:
+      "Managed Linux-based production environments. Automated routine operations, implemented backup strategies, and maintained high-availability configurations.",
+    technologies: ["Linux", "Bash", "Python", "Nagios", "VMware", "Puppet"],
+  },
+];
+
+const skills = {
+  "Cloud Platforms": ["AWS", "GCP", "Azure", "Cloudflare"],
+  "Containers & Orchestration": ["Kubernetes", "Docker", "Helm", "Istio", "ArgoCD"],
+  "Infrastructure as Code": ["Terraform", "Pulumi", "Crossplane", "CloudFormation"],
+  "Programming": ["Go", "Python", "TypeScript", "Bash"],
+  "CI/CD": ["GitHub Actions", "GitLab CI", "Flux CD", "Jenkins"],
+  "Observability": ["Prometheus", "Grafana", "Datadog", "OpenTelemetry"],
+  "Security": ["Vault", "OPA", "Falco", "Trivy", "cert-manager"],
+  "Databases": ["PostgreSQL", "Redis", "DynamoDB", "MongoDB"],
+};
+
+const education = [
+  {
+    title: "Bachelor of Science in Computer Science",
+    company: "University of Technology",
+    date: "2012 – 2016",
+    description:
+      "Focused on distributed systems, networking, and operating systems. Senior thesis on container orchestration patterns.",
+  },
+];
+---
+
+<BaseLayout title="Resume" description="Cloud Engineer resume — experience, skills, certifications, and education.">
+  <section class="section-padding">
+    <div class="section-container">
+      <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-12">
+          <div>
+            <h1 class="text-4xl sm:text-5xl font-bold text-white tracking-tight">Resume</h1>
+            <p class="mt-2 text-lg text-surface-400">Cloud Engineer & Platform Builder</p>
+          </div>
+          <a
+            href="/resume.pdf"
+            class="btn-primary flex-shrink-0"
+            download
+          >
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            Download PDF
+          </a>
+        </div>
+
+        <!-- Summary -->
+        <section class="mb-16">
+          <h2 class="text-2xl font-bold text-white mb-4">Summary</h2>
+          <p class="text-surface-300 leading-relaxed">
+            Cloud Engineer with 8+ years of experience building and operating production-grade 
+            distributed systems. Expert in multi-cloud architectures, Kubernetes platform engineering, 
+            and infrastructure automation. Proven track record of reducing operational complexity, 
+            improving system reliability, and enabling engineering teams to ship faster through 
+            developer experience tooling.
+          </p>
+        </section>
+
+        <!-- Experience -->
+        <section class="mb-16">
+          <h2 class="text-2xl font-bold text-white mb-8">Experience</h2>
+          <Timeline items={experience} />
+        </section>
+
+        <!-- Technical Skills -->
+        <section class="mb-16">
+          <h2 class="text-2xl font-bold text-white mb-8">Technical Skills</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {Object.entries(skills).map(([category, items]) => (
+              <div class="card">
+                <h3 class="text-sm font-semibold text-white mb-3">{category}</h3>
+                <div class="flex flex-wrap gap-2">
+                  {items.map((skill) => (
+                    <TechBadge name={skill} />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <!-- Certifications -->
+        <section class="mb-16">
+          <h2 class="text-2xl font-bold text-white mb-8">Certifications</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {certifications.slice(0, 6).map((cert) => (
+              <CertificationCard
+                title={cert.title}
+                issuer={cert.issuer}
+                date={cert.date}
+                credentialUrl={cert.credentialUrl}
+              />
+            ))}
+          </div>
+        </section>
+
+        <!-- Education -->
+        <section class="mb-16">
+          <h2 class="text-2xl font-bold text-white mb-8">Education</h2>
+          <Timeline items={education} />
+        </section>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

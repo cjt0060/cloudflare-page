@@ -1,0 +1,250 @@
+---
+title: "Kubernetes Multi-Tenancy Patterns for Platform Teams"
+description: "Exploring namespace-based isolation, virtual clusters, and policy engines for building secure multi-tenant Kubernetes platforms that serve multiple engineering teams."
+publishedDate: "2026-05-20"
+category: "Kubernetes"
+tags: ["kubernetes", "multi-tenancy", "platform-engineering", "security", "namespaces"]
+image: "/images/blog/k8s-multi-tenancy.svg"
+draft: false
+---
+
+## Introduction
+
+As organizations adopt Kubernetes as their standard compute platform, platform teams face the challenge of serving multiple engineering teams on shared clusters. Multi-tenancy — the practice of multiple tenants sharing infrastructure — requires careful consideration of isolation, security, and resource management.
+
+## Multi-Tenancy Models
+
+### Namespace-per-Tenant
+
+The simplest model assigns each tenant a dedicated namespace with RBAC policies:
+
+```yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: team-payments
+  labels:
+    tenant: payments
+    environment: production
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: team-payments-admin
+  namespace: team-payments
+subjects:
+  - kind: Group
+    name: team-payments
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: namespace-admin
+  apiGroup: rbac.authorization.k8s.io
+```
+
+### Resource Quotas
+
+Prevent noisy neighbor problems with resource quotas:
+
+```yaml
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: team-payments-quota
+  namespace: team-payments
+spec:
+  hard:
+    requests.cpu: "20"
+    requests.memory: 40Gi
+    limits.cpu: "40"
+    limits.memory: 80Gi
+    pods: "100"
+    services: "20"
+    persistentvolumeclaims: "10"
+```
+
+## Network Policies
+
+Network isolation is critical for multi-tenant security:
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-cross-namespace
+  namespace: team-payments
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              tenant: payments
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              tenant: payments
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+      ports:
+        - protocol: UDP
+          port: 53
+```
+
+## Policy Engines: OPA Gatekeeper
+
+Enforce organizational policies across all tenants:
+
+```yaml
+apiVersion: templates.gatekeeper.sh/v1
+kind: ConstraintTemplate
+metadata:
+  name: k8srequiredlabels
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sRequiredLabels
+      validation:
+        openAPIV3Schema:
+          type: object
+          properties:
+            labels:
+              type: array
+              items:
+                type: string
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package k8srequiredlabels
+        violation[{"msg": msg}] {
+          provided := {label | input.review.object.metadata.labels[label]}
+          required := {label | label := input.parameters.labels[_]}
+          missing := required - provided
+          count(missing) > 0
+          msg := sprintf("Missing required labels: %v", [missing])
+        }
+---
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sRequiredLabels
+metadata:
+  name: require-team-labels
+spec:
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Namespace"]
+  parameters:
+    labels:
+      - "tenant"
+      - "environment"
+      - "cost-center"
+```
+
+## Virtual Clusters with vCluster
+
+For stronger isolation, virtual clusters provide each tenant with their own control plane:
+
+```yaml
+apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
+kind: VCluster
+metadata:
+  name: team-payments-vcluster
+  namespace: vcluster-host
+spec:
+  controlPlane:
+    distro:
+      k8s:
+        version: "1.28"
+    statefulSet:
+      resources:
+        limits:
+          cpu: "2"
+          memory: 4Gi
+  sync:
+    toHost:
+      ingresses:
+        enabled: true
+      storageClasses:
+        enabled: true
+```
+
+## Hierarchical Namespaces
+
+For teams that need sub-teams or multiple environments:
+
+```yaml
+apiVersion: hnc.x-k8s.io/v1alpha2
+kind: SubnamespaceAnchor
+metadata:
+  name: team-payments-staging
+  namespace: team-payments
+---
+apiVersion: hnc.x-k8s.io/v1alpha2
+kind: HierarchyConfiguration
+metadata:
+  name: hierarchy
+  namespace: team-payments
+spec:
+  allowCascadingDeletion: false
+```
+
+## Monitoring per Tenant
+
+Provide each tenant with isolated observability:
+
+```yaml
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: team-payments-alerts
+  namespace: team-payments
+spec:
+  groups:
+    - name: team-payments.rules
+      rules:
+        - alert: HighErrorRate
+          expr: |
+            sum(rate(http_requests_total{namespace="team-payments",status=~"5.."}[5m]))
+            /
+            sum(rate(http_requests_total{namespace="team-payments"}[5m]))
+            > 0.05
+          for: 5m
+          labels:
+            team: payments
+            severity: critical
+```
+
+## Cost Allocation
+
+Track costs per tenant using resource labels and kubecost:
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    tenant: payments
+    cost-center: cc-1234
+  annotations:
+    kubecost.com/team: payments
+```
+
+## Best Practices Summary
+
+1. **Start simple** — namespace isolation covers 80% of use cases
+2. **Automate onboarding** — use controllers to provision tenant resources
+3. **Enforce policies early** — deploy Gatekeeper before onboarding tenants
+4. **Monitor fairness** — track resource usage per tenant to prevent imbalance
+5. **Plan for growth** — design with eventual cluster-per-tenant escape hatch
+6. **Document contracts** — define clear SLOs between platform team and tenants
+
+## Conclusion
+
+Multi-tenancy on Kubernetes is a spectrum from basic namespace isolation to full virtual clusters. Choose the right model based on your security requirements, team autonomy needs, and operational capacity. Start simple and evolve as requirements grow.

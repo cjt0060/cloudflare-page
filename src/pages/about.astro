@@ -1,0 +1,106 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import TechBadge from "@components/TechBadge.astro";
+import SocialIcons from "@components/SocialIcons.astro";
+---
+
+<BaseLayout title="About" description="Learn more about my background in cloud engineering, platform engineering, and DevOps.">
+  <section class="section-padding">
+    <div class="section-container">
+      <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <div class="mb-12">
+          <h1 class="text-4xl sm:text-5xl font-bold text-white tracking-tight">About Me</h1>
+          <p class="mt-4 text-lg text-surface-400">Cloud engineer, platform builder, automation enthusiast.</p>
+        </div>
+
+        <!-- Bio -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+          <div class="lg:col-span-2 space-y-6">
+            <p class="text-surface-300 leading-relaxed">
+              I'm a Cloud Engineer with over 8 years of experience designing, building, and 
+              operating production-grade distributed systems. My work spans multi-cloud architectures, 
+              Kubernetes platforms, and developer experience tooling.
+            </p>
+
+            <p class="text-surface-300 leading-relaxed">
+              I'm passionate about infrastructure automation, observability, and building 
+              platforms that empower engineering teams to ship faster. I believe in GitOps, 
+              infrastructure as code, and treating operations as a software engineering discipline.
+            </p>
+
+            <p class="text-surface-300 leading-relaxed">
+              When I'm not building cloud infrastructure, I contribute to open-source projects, 
+              write about cloud engineering, and mentor junior engineers. I'm a strong advocate 
+              for documentation, testing, and operational excellence.
+            </p>
+
+            <h2 class="text-2xl font-bold text-white pt-6">What I Do</h2>
+
+            <ul class="space-y-3 text-surface-300">
+              <li class="flex items-start gap-3">
+                <svg class="w-5 h-5 text-primary-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                Design and implement multi-cloud architectures (AWS, GCP, Azure)
+              </li>
+              <li class="flex items-start gap-3">
+                <svg class="w-5 h-5 text-primary-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                Build and operate Kubernetes platforms at scale
+              </li>
+              <li class="flex items-start gap-3">
+                <svg class="w-5 h-5 text-primary-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                Develop CI/CD pipelines and GitOps workflows
+              </li>
+              <li class="flex items-start gap-3">
+                <svg class="w-5 h-5 text-primary-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                Implement observability and monitoring solutions
+              </li>
+              <li class="flex items-start gap-3">
+                <svg class="w-5 h-5 text-primary-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                Automate infrastructure with Terraform and Pulumi
+              </li>
+              <li class="flex items-start gap-3">
+                <svg class="w-5 h-5 text-primary-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                Build developer platforms and internal tooling
+              </li>
+            </ul>
+          </div>
+
+          <!-- Sidebar -->
+          <div class="space-y-8">
+            <div class="card">
+              <h3 class="text-sm font-semibold text-white mb-3">Connect</h3>
+              <SocialIcons size="md" />
+            </div>
+
+            <div class="card">
+              <h3 class="text-sm font-semibold text-white mb-3">Location</h3>
+              <p class="text-sm text-surface-400">San Francisco, CA</p>
+              <p class="text-sm text-surface-500 mt-1">Open to remote work</p>
+            </div>
+
+            <div class="card">
+              <h3 class="text-sm font-semibold text-white mb-4">Core Technologies</h3>
+              <div class="flex flex-wrap gap-2">
+                {["AWS", "Kubernetes", "Terraform", "Go", "Python", "Docker", "Linux", "GitOps"].map((tech) => (
+                  <TechBadge name={tech} />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,89 @@
+---
+const currentYear = new Date().getFullYear();
+
+const footerLinks = {
+  pages: [
+    { label: "Home", href: "/" },
+    { label: "About", href: "/about" },
+    { label: "Resume", href: "/resume" },
+    { label: "Projects", href: "/projects" },
+    { label: "Blog", href: "/blog" },
+    { label: "Contact", href: "/contact" },
+  ],
+  social: [
+    { label: "GitHub", href: "https://github.com/yourusername" },
+    { label: "LinkedIn", href: "https://linkedin.com/in/yourusername" },
+    { label: "Twitter", href: "https://twitter.com/yourusername" },
+  ],
+  resources: [
+    { label: "RSS Feed", href: "/rss.xml" },
+    { label: "Sitemap", href: "/sitemap-index.xml" },
+  ],
+};
+---
+
+<footer class="border-t border-surface-800/50 bg-surface-950">
+  <div class="section-container py-12 sm:py-16">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+      <!-- Brand -->
+      <div class="sm:col-span-2 lg:col-span-1">
+        <a href="/" class="flex items-center gap-2 mb-4">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center">
+            <span class="text-white font-bold text-sm">CE</span>
+          </div>
+          <span class="font-semibold text-white">CloudEngineer</span>
+        </a>
+        <p class="text-sm text-surface-400 leading-relaxed max-w-xs">
+          Building resilient, scalable cloud infrastructure. Specializing in AWS, Kubernetes, and platform engineering.
+        </p>
+      </div>
+
+      <!-- Pages -->
+      <div>
+        <h3 class="text-sm font-semibold text-white mb-4">Pages</h3>
+        <ul class="space-y-2">
+          {footerLinks.pages.map((link) => (
+            <li>
+              <a href={link.href} class="text-sm link-hover">{link.label}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Social -->
+      <div>
+        <h3 class="text-sm font-semibold text-white mb-4">Connect</h3>
+        <ul class="space-y-2">
+          {footerLinks.social.map((link) => (
+            <li>
+              <a href={link.href} target="_blank" rel="noopener noreferrer" class="text-sm link-hover">
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Resources -->
+      <div>
+        <h3 class="text-sm font-semibold text-white mb-4">Resources</h3>
+        <ul class="space-y-2">
+          {footerLinks.resources.map((link) => (
+            <li>
+              <a href={link.href} class="text-sm link-hover">{link.label}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-12 pt-8 border-t border-surface-800/50 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p class="text-sm text-surface-500">
+        &copy; {currentYear} Your Name. All rights reserved.
+      </p>
+      <p class="text-sm text-surface-600">
+        Built with Astro &middot; Deployed on Cloudflare Pages
+      </p>
+    </div>
+  </div>
+</footer>
