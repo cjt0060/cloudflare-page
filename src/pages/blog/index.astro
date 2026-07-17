@@ -4,11 +4,11 @@ import BlogCard from "@components/BlogCard.astro";
 import { getCollection } from "astro:content";
 import { calculateReadingTime } from "@/utils/readingTime";
 
-const posts = (await getCollection("blog"))
+const allPosts = (await getCollection("blog"))
   .filter((post) => !post.data.draft)
   .sort((a, b) => new Date(b.data.publishedDate).getTime() - new Date(a.data.publishedDate).getTime());
 
-const categories = [...new Set(posts.map((p) => p.data.category))];
+const categories = [...new Set(allPosts.map((p) => p.data.category))];
 ---
 
 <BaseLayout title="Blog" description="Articles about cloud engineering, Kubernetes, AWS, Terraform, and platform engineering.">
@@ -26,7 +26,7 @@ const categories = [...new Set(posts.map((p) => p.data.category))];
         <!-- Categories -->
         <div class="flex flex-wrap gap-2 mb-10">
           <span class="px-3 py-1.5 text-sm rounded-lg bg-primary-500/10 text-primary-400 border border-primary-500/20">
-            All ({posts.length})
+            All ({allPosts.length})
           </span>
           {categories.map((cat) => (
             <span class="px-3 py-1.5 text-sm rounded-lg text-surface-400 border border-surface-700 hover:border-surface-600 transition-colors cursor-default">
@@ -37,7 +37,7 @@ const categories = [...new Set(posts.map((p) => p.data.category))];
 
         <!-- Posts Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {posts.map((post) => (
+          {allPosts.map((post) => (
             <BlogCard
               title={post.data.title}
               description={post.data.description}
