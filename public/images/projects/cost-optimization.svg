@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" fill="none">
-  <rect width="800" height="400" rx="8" fill="#18181b"/>
-  <text x="400" y="200" text-anchor="middle" font-family="monospace" font-size="16" fill="#71717a">Cost Optimization Engine</text>
-  <circle cx="400" cy="200" r="80" stroke="#4f46e5" stroke-width="2" fill="#1e1b4b" opacity="0.3"/>
-  <text x="400" y="195" text-anchor="middle" font-family="system-ui" font-weight="700" font-size="24" fill="#a5b4fc">-40%</text>
-  <text x="400" y="220" text-anchor="middle" font-family="system-ui" font-size="11" fill="#71717a">Cost Reduction</text>
-</svg>
