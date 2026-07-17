@@ -19,11 +19,11 @@ jobs:
         with:
           node-version: "24"
 
-      - name: Create CI .npmrc
-        run: echo "registry=https://registry.npmjs.org/" > .npmrc
+      - name: Remove local .npmrc
+        run: rm -f ~/.npmrc .npmrc
 
       - name: Install dependencies
-        run: npm install
+        run: npm install --registry https://registry.npmjs.org/
 
       - name: Run ESLint
         run: npm run lint
