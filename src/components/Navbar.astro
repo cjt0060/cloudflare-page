@@ -1,13 +1,5 @@
 ---
-const navLinks = [
-  { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
-  { label: "Resume", href: "/resume" },
-  { label: "Projects", href: "/projects" },
-  { label: "Blog", href: "/blog" },
-  { label: "Certifications", href: "/certifications" },
-  { label: "Contact", href: "/contact" },
-];
+import { navLinks } from "@/data/navigation";
 
 const currentPath = Astro.url.pathname;
 ---
@@ -30,6 +22,7 @@ const currentPath = Astro.url.pathname;
         {navLinks.map((link) => (
           <a
             href={link.href}
+            data-astro-prefetch="tap"
             class:list={[
               "px-3 py-2 text-sm rounded-md transition-colors duration-200",
               currentPath === link.href || (link.href !== "/" && currentPath.startsWith(link.href))
@@ -62,6 +55,7 @@ const currentPath = Astro.url.pathname;
       {navLinks.map((link) => (
         <a
           href={link.href}
+          data-astro-prefetch="tap"
           class:list={[
             "block px-3 py-2 text-sm rounded-md transition-colors duration-200",
             currentPath === link.href || (link.href !== "/" && currentPath.startsWith(link.href))

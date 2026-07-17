@@ -2,6 +2,7 @@
 import BaseLayout from "@layouts/BaseLayout.astro";
 import BlogCard from "@components/BlogCard.astro";
 import { getCollection } from "astro:content";
+import { calculateReadingTime } from "@/utils/readingTime";
 
 const posts = (await getCollection("blog"))
   .filter((post) => !post.data.draft)
@@ -42,7 +43,7 @@ const categories = [...new Set(posts.map((p) => p.data.category))];
               description={post.data.description}
               date={post.data.publishedDate}
               category={post.data.category}
-              readingTime={`${Math.ceil(post.body!.split(/\s+/).length / 200)} min read`}
+              readingTime={`${calculateReadingTime(post.body!)} min read`}
               href={`/blog/${post.slug}`}
               tags={post.data.tags}
             />

@@ -9,6 +9,7 @@ import CTA from "@components/CTA.astro";
 import { projects } from "@/data/projects";
 import { certifications } from "@/data/certifications";
 import { getCollection } from "astro:content";
+import { calculateReadingTime } from "@/utils/readingTime";
 
 const featuredProjects = projects.filter((p) => p.featured).slice(0, 3);
 const featuredCerts = certifications.slice(0, 4);
@@ -83,7 +84,7 @@ const technologies = [
           <h2 class="text-2xl sm:text-3xl font-bold text-white">Featured Projects</h2>
           <p class="mt-2 text-surface-400">Recent infrastructure and platform engineering work</p>
         </div>
-        <a href="/projects" class="hidden sm:flex items-center gap-1 text-sm text-primary-400 hover:text-primary-300 transition-colors">
+        <a href="/projects" data-astro-prefetch="tap" class="hidden sm:flex items-center gap-1 text-sm text-primary-400 hover:text-primary-300 transition-colors">
           View all
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -112,7 +113,7 @@ const technologies = [
           <h2 class="text-2xl sm:text-3xl font-bold text-white">Latest Articles</h2>
           <p class="mt-2 text-surface-400">Thoughts on cloud engineering and DevOps</p>
         </div>
-        <a href="/blog" class="hidden sm:flex items-center gap-1 text-sm text-primary-400 hover:text-primary-300 transition-colors">
+        <a href="/blog" data-astro-prefetch="tap" class="hidden sm:flex items-center gap-1 text-sm text-primary-400 hover:text-primary-300 transition-colors">
           View all
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -126,7 +127,7 @@ const technologies = [
             description={post.data.description}
             date={post.data.publishedDate}
             category={post.data.category}
-            readingTime={`${Math.ceil(post.body!.split(/\s+/).length / 200)} min read`}
+            readingTime={`${calculateReadingTime(post.body!)} min read`}
             href={`/blog/${post.slug}`}
           />
         ))}
@@ -142,7 +143,7 @@ const technologies = [
           <h2 class="text-2xl sm:text-3xl font-bold text-white">Certifications</h2>
           <p class="mt-2 text-surface-400">Professional cloud and infrastructure certifications</p>
         </div>
-        <a href="/certifications" class="hidden sm:flex items-center gap-1 text-sm text-primary-400 hover:text-primary-300 transition-colors">
+        <a href="/certifications" data-astro-prefetch="tap" class="hidden sm:flex items-center gap-1 text-sm text-primary-400 hover:text-primary-300 transition-colors">
           View all
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />

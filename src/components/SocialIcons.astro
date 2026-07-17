@@ -1,22 +1,12 @@
 ---
-interface SocialLink {
-  platform: string;
-  href: string;
-  label: string;
-}
+import { socialLinks, type SocialLink } from "@/data/navigation";
 
 interface Props {
   links?: SocialLink[];
   size?: "sm" | "md" | "lg";
 }
 
-const defaultLinks: SocialLink[] = [
-  { platform: "github", href: "https://github.com/yourusername", label: "GitHub" },
-  { platform: "linkedin", href: "https://linkedin.com/in/yourusername", label: "LinkedIn" },
-  { platform: "twitter", href: "https://twitter.com/yourusername", label: "Twitter" },
-];
-
-const { links = defaultLinks, size = "md" } = Astro.props;
+const { links = socialLinks, size = "md" } = Astro.props;
 
 const sizeClasses = {
   sm: "w-8 h-8",

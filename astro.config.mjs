@@ -17,4 +17,7 @@ export default defineConfig({
     },
   },
   output: "static",
+  prefetch: {
+    prefetchAll: true,
+  },
 });
