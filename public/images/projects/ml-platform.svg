@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" fill="none">
+  <rect width="800" height="400" rx="8" fill="#18181b"/>
+  <text x="400" y="200" text-anchor="middle" font-family="monospace" font-size="16" fill="#71717a">ML Platform on Kubernetes</text>
+  <rect x="200" y="100" width="400" height="60" rx="8" stroke="#4f46e5" stroke-width="2" fill="#1e1b4b" opacity="0.5"/>
+  <text x="400" y="135" text-anchor="middle" font-family="system-ui" font-size="12" fill="#a5b4fc">GPU Scheduler + KServe</text>
+  <rect x="200" y="200" width="120" height="50" rx="8" fill="#27272a" stroke="#3f3f46"/>
+  <text x="260" y="230" text-anchor="middle" font-family="system-ui" font-size="10" fill="#a1a1aa">Training</text>
+  <rect x="340" y="200" width="120" height="50" rx="8" fill="#27272a" stroke="#3f3f46"/>
+  <text x="400" y="230" text-anchor="middle" font-family="system-ui" font-size="10" fill="#a1a1aa">Serving</text>
+  <rect x="480" y="200" width="120" height="50" rx="8" fill="#27272a" stroke="#3f3f46"/>
+  <text x="540" y="230" text-anchor="middle" font-family="system-ui" font-size="10" fill="#a1a1aa">MLflow</text>
+</svg>
