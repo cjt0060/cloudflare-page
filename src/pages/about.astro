@@ -5,22 +5,30 @@ import SocialIcons from "@components/SocialIcons.astro";
 ---
 
 <BaseLayout title="About" description="Learn more about my background in cloud engineering, platform engineering, and DevOps.">
-  <div id="bg-image" class="fixed inset-0 -z-10 bg-cover bg-center bg-fixed transition-opacity duration-300" style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&q=80');"></div>
-  <div id="bg-overlay" class="fixed inset-0 -z-10 bg-gradient-to-b from-surface-950/60 via-surface-950/70 to-surface-950/90 transition-opacity duration-300"></div>
+  <div id="bg-image" class="fixed inset-0 -z-10 bg-cover bg-center bg-fixed" style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&q=80');"></div>
+  <div id="bg-overlay" class="fixed inset-0 -z-10 bg-gradient-to-b from-surface-950/60 via-surface-950/70 to-surface-950/90"></div>
 
   <script>
     const bgImage = document.getElementById('bg-image');
     const bgOverlay = document.getElementById('bg-overlay');
+    let rafId = null;
 
     if (bgImage && bgOverlay) {
-      window.addEventListener('scroll', () => {
+      const updateOpacity = () => {
         const scrollTop = window.scrollY;
         const fadeDistance = window.innerHeight * 0.9;
         const opacity = Math.max(1 - (scrollTop / fadeDistance), 0);
 
         bgImage.style.opacity = opacity;
         bgOverlay.style.opacity = opacity;
-      });
+      };
+
+      window.addEventListener('scroll', () => {
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(updateOpacity);
+      }, { passive: true });
+
+      updateOpacity();
     }
   </script>
 
