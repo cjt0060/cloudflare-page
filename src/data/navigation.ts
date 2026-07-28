@@ -22,7 +22,6 @@ export interface SocialLink {
 export const socialLinks: SocialLink[] = [
   { platform: "github", href: "https://github.com/yourusername", label: "GitHub" },
   { platform: "linkedin", href: "https://linkedin.com/in/yourusername", label: "LinkedIn" },
-  { platform: "twitter", href: "https://twitter.com/yourusername", label: "Twitter" },
 ];
 
 export interface FooterLink {

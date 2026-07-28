@@ -8,7 +8,7 @@ A production-quality personal portfolio website built with **Astro**, **Tailwind
 - **Blazing fast** — static site generation, optimized assets, 95+ Lighthouse scores
 - **Fully responsive** — mobile-first design across all pages
 - **Accessible** — WCAG-friendly markup, semantic HTML, focus indicators
-- **SEO optimized** — Open Graph, Twitter Cards, JSON-LD, sitemap, robots.txt, RSS
+- **SEO optimized** — Open Graph, JSON-LD, sitemap, robots.txt, RSS
 - **MDX blog** — syntax highlighting, reading time, table of contents, categories/tags
 - **Reusable components** — project cards, timeline, certification badges, and more
 - **Cloudflare Pages ready** — zero-config deployment

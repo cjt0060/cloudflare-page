@@ -9,7 +9,6 @@ export const siteConfig = {
 };
 
 export const socialUrls = {
-  github: "https://github.com/yourusername",
-  linkedin: "https://linkedin.com/in/yourusername",
-  twitter: "https://twitter.com/yourusername",
+  github: "https://github.com/cjt0060",
+  linkedin: "https://linkedin.com/in/christopher-j-trejo",
 };

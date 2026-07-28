@@ -2,7 +2,6 @@
 import { socialLinks, type SocialLink } from "@/data/navigation";
 import GitHubIcon from "@/components/Icons/GitHub.astro";
 import LinkedInIcon from "@/components/Icons/LinkedIn.astro";
-import TwitterIcon from "@/components/Icons/Twitter.astro";
 
 interface Props {
   links?: SocialLink[];
@@ -38,7 +37,6 @@ const iconSize = {
     >
       {link.platform === "github" && <GitHubIcon class={iconSize[size]} />}
       {link.platform === "linkedin" && <LinkedInIcon class={iconSize[size]} />}
-      {link.platform === "twitter" && <TwitterIcon class={iconSize[size]} />}
     </a>
   ))}
 </div>
