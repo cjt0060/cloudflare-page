@@ -9,40 +9,40 @@ export interface Certification {
 
 export const certifications: Certification[] = [
   {
-    title: "AWS Solutions Architect – Professional",
-    issuer: "Amazon Web Services",
-    date: "2024",
+    title: "Microsoft Certified: Azure Solutions Architect Expert",
+    issuer: "Microsoft",
+    date: "2026",
     credentialUrl: "https://aws.amazon.com/verification",
     description:
       "Advanced architectural design patterns, multi-account strategies, and complex hybrid architectures on AWS.",
-    category: "AWS",
+    category: "Azure",
   },
   {
-    title: "AWS DevOps Engineer – Professional",
-    issuer: "Amazon Web Services",
-    date: "2024",
+    title: "Google Cloud Certified Professional Cloud Architect",
+    issuer: "Google",
+    date: "2026",
     credentialUrl: "https://aws.amazon.com/verification",
     description:
       "CI/CD pipelines, infrastructure as code, monitoring, logging, and operational excellence on AWS.",
-    category: "AWS",
+    category: "GCP",
   },
   {
-    title: "Certified Kubernetes Administrator (CKA)",
-    issuer: "Cloud Native Computing Foundation",
-    date: "2024",
+    title: "CHashiCorp Certified: Terraform Authoring and Operations Professional",
+    issuer: "HashiCorp",
+    date: "2026",
     credentialUrl: "https://www.credly.com/verify",
     description:
       "Kubernetes cluster administration, networking, storage, security, and troubleshooting.",
-    category: "Kubernetes",
+    category: "Terraform",
   },
   {
-    title: "Certified Kubernetes Security Specialist (CKS)",
-    issuer: "Cloud Native Computing Foundation",
-    date: "2024",
+    title: "Microsoft Certified: Azure Network Engineer Associate",
+    issuer: "Microsoft",
+    date: "2026",
     credentialUrl: "https://www.credly.com/verify",
     description:
       "Kubernetes security best practices, supply chain security, runtime security, and network policies.",
-    category: "Kubernetes",
+    category: "Azure",
   },
   {
     title: "HashiCorp Terraform Associate",
@@ -54,27 +54,27 @@ export const certifications: Certification[] = [
     category: "Terraform",
   },
   {
-    title: "Google Cloud Professional Cloud Architect",
-    issuer: "Google Cloud",
-    date: "2023",
+    title: "Microsoft Certified: Azure Administrator Associate",
+    issuer: "Microsoft",
+    date: "2026",
     credentialUrl: "https://www.credential.net/verify",
     description:
       "Designing and planning cloud solution architecture, managing infrastructure, and ensuring security on GCP.",
-    category: "GCP",
+    category: "Azure",
   },
   {
-    title: "Microsoft Azure Solutions Architect Expert",
+    title: "Microsoft Certified: Azure Developer Associate",
     issuer: "Microsoft",
-    date: "2023",
+    date: "2025",
     credentialUrl: "https://learn.microsoft.com/verify",
     description:
       "Design identity, governance, monitoring, compute, networking, storage, and data integration solutions on Azure.",
     category: "Azure",
   },
   {
-    title: "HashiCorp Vault Associate",
+    title: "HashiCorp Certified: Consul Associate",
     issuer: "HashiCorp",
-    date: "2023",
+    date: "2025",
     credentialUrl: "https://www.credly.com/verify",
     description:
       "Secrets management, encryption as a service, dynamic credentials, and identity-based access.",
