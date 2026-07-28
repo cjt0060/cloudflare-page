@@ -10,6 +10,7 @@ export interface Project {
   lessons: string[];
   slug: string;
   featured: boolean;
+  category: string;
 }
 
 export const projects: Project[] = [
@@ -30,6 +31,7 @@ export const projects: Project[] = [
     ],
     slug: "multi-cloud-kubernetes-platform",
     featured: true,
+    category: "Kubernetes",
   },
   {
     title: "Serverless Data Pipeline",
@@ -47,6 +49,7 @@ export const projects: Project[] = [
     ],
     slug: "serverless-data-pipeline",
     featured: true,
+    category: "AWS",
   },
   {
     title: "Infrastructure as Code Framework",
@@ -65,6 +68,7 @@ export const projects: Project[] = [
     ],
     slug: "infrastructure-as-code-framework",
     featured: true,
+    category: "Terraform",
   },
   {
     title: "Cloud Cost Optimization Engine",
@@ -82,6 +86,7 @@ export const projects: Project[] = [
     ],
     slug: "cloud-cost-optimization-engine",
     featured: false,
+    category: "Multi-Cloud",
   },
   {
     title: "Zero-Trust Network Architecture",
@@ -99,6 +104,7 @@ export const projects: Project[] = [
     ],
     slug: "zero-trust-network-architecture",
     featured: true,
+    category: "Kubernetes",
   },
   {
     title: "AI/ML Platform on Kubernetes",
@@ -117,5 +123,6 @@ export const projects: Project[] = [
     ],
     slug: "ai-ml-platform-kubernetes",
     featured: true,
+    category: "AI Infrastructure",
   },
 ];

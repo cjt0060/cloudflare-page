@@ -2,6 +2,8 @@
 import BaseLayout from "@layouts/BaseLayout.astro";
 import ProjectCard from "@components/ProjectCard.astro";
 import { projects } from "@/data/projects";
+
+const categories = [...new Set(projects.map((p) => p.category))];
 ---
 
 <BaseLayout title="Projects" description="Cloud engineering and platform projects — Kubernetes, AWS, Terraform, and more.">
@@ -12,25 +14,81 @@ import { projects } from "@/data/projects";
         <div class="mb-12">
           <h1 class="text-4xl sm:text-5xl font-bold text-white tracking-tight">Projects</h1>
           <p class="mt-4 text-lg text-surface-400 max-w-2xl">
-            A selection of cloud infrastructure and platform engineering projects. 
+            A selection of cloud infrastructure and platform engineering projects.
             Each demonstrates different aspects of distributed systems design.
           </p>
         </div>
 
+        <!-- Category filters -->
+        <div id="project-filters" class="flex flex-wrap gap-2 mb-10">
+          <button
+            type="button"
+            data-filter="all"
+            aria-pressed="true"
+            class="project-filter px-3 py-1.5 text-sm rounded-lg border transition-colors bg-primary-500/10 text-primary-400 border-primary-500/20"
+          >
+            All ({projects.length})
+          </button>
+          {categories.map((cat) => (
+            <button
+              type="button"
+              data-filter={cat}
+              aria-pressed="false"
+              class="project-filter px-3 py-1.5 text-sm rounded-lg border transition-colors text-surface-400 border-surface-700 hover:border-surface-600"
+            >
+              {cat} ({projects.filter((p) => p.category === cat).length})
+            </button>
+          ))}
+        </div>
+
         <!-- Projects Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div id="project-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project) => (
-            <ProjectCard
-              title={project.title}
-              description={project.description}
-              technologies={project.technologies.slice(0, 4)}
-              href={`/projects/${project.slug}`}
-              github={project.github}
-              demo={project.demo}
-            />
+            <div class="project-item" data-category={project.category}>
+              <ProjectCard
+                title={project.title}
+                description={project.description}
+                technologies={project.technologies.slice(0, 4)}
+                href={`/projects/${project.slug}`}
+                github={project.github}
+                demo={project.demo}
+              />
+            </div>
           ))}
         </div>
       </div>
     </div>
   </section>
+
+  <script>
+    const filters = document.querySelectorAll<HTMLButtonElement>(".project-filter");
+    const items = document.querySelectorAll<HTMLElement>(".project-item");
+
+    const activeClasses = ["bg-primary-500/10", "text-primary-400", "border-primary-500/20"];
+    const inactiveClasses = ["text-surface-400", "border-surface-700", "hover:border-surface-600"];
+
+    filters.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const selected = btn.dataset.filter;
+
+        filters.forEach((f) => {
+          const active = f === btn;
+          f.setAttribute("aria-pressed", active ? "true" : "false");
+          if (active) {
+            f.classList.add(...activeClasses);
+            f.classList.remove(...inactiveClasses);
+          } else {
+            f.classList.remove(...activeClasses);
+            f.classList.add(...inactiveClasses);
+          }
+        });
+
+        items.forEach((item) => {
+          const category = item.dataset.category;
+          const show = selected === "all" || category === selected;
+          item.style.display = show ? "" : "none";
+        });
+      });
+    });
+  </script>
 </BaseLayout>

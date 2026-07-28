@@ -23,33 +23,77 @@ const categories = [...new Set(allPosts.map((p) => p.data.category))];
           </p>
         </div>
 
-        <!-- Categories -->
-        <div class="flex flex-wrap gap-2 mb-10">
-          <span class="px-3 py-1.5 text-sm rounded-lg bg-primary-500/10 text-primary-400 border border-primary-500/20">
+        <!-- Category filters -->
+        <div id="blog-filters" class="flex flex-wrap gap-2 mb-10">
+          <button
+            type="button"
+            data-filter="all"
+            aria-pressed="true"
+            class="blog-filter px-3 py-1.5 text-sm rounded-lg border transition-colors bg-primary-500/10 text-primary-400 border-primary-500/20"
+          >
             All ({allPosts.length})
-          </span>
+          </button>
           {categories.map((cat) => (
-            <span class="px-3 py-1.5 text-sm rounded-lg text-surface-400 border border-surface-700 hover:border-surface-600 transition-colors cursor-default">
-              {cat}
-            </span>
+            <button
+              type="button"
+              data-filter={cat}
+              aria-pressed="false"
+              class="blog-filter px-3 py-1.5 text-sm rounded-lg border transition-colors text-surface-400 border-surface-700 hover:border-surface-600"
+            >
+              {cat} ({allPosts.filter((p) => p.data.category === cat).length})
+            </button>
           ))}
         </div>
 
         <!-- Posts Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div id="blog-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {allPosts.map((post) => (
-            <BlogCard
-              title={post.data.title}
-              description={post.data.description}
-              date={post.data.publishedDate}
-              category={post.data.category}
-              readingTime={`${calculateReadingTime(post.body!)} min read`}
-              href={`/blog/${post.slug}`}
-              tags={post.data.tags}
-            />
+            <div class="blog-item" data-category={post.data.category}>
+              <BlogCard
+                title={post.data.title}
+                description={post.data.description}
+                date={post.data.publishedDate}
+                category={post.data.category}
+                readingTime={`${calculateReadingTime(post.body!)} min read`}
+                href={`/blog/${post.slug}`}
+                tags={post.data.tags}
+              />
+            </div>
           ))}
         </div>
       </div>
     </div>
   </section>
+
+  <script>
+    const filters = document.querySelectorAll<HTMLButtonElement>(".blog-filter");
+    const items = document.querySelectorAll<HTMLElement>(".blog-item");
+
+    const activeClasses = ["bg-primary-500/10", "text-primary-400", "border-primary-500/20"];
+    const inactiveClasses = ["text-surface-400", "border-surface-700", "hover:border-surface-600"];
+
+    filters.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const selected = btn.dataset.filter;
+
+        filters.forEach((f) => {
+          const active = f === btn;
+          f.setAttribute("aria-pressed", active ? "true" : "false");
+          if (active) {
+            f.classList.add(...activeClasses);
+            f.classList.remove(...inactiveClasses);
+          } else {
+            f.classList.remove(...activeClasses);
+            f.classList.add(...inactiveClasses);
+          }
+        });
+
+        items.forEach((item) => {
+          const category = item.dataset.category;
+          const show = selected === "all" || category === selected;
+          item.style.display = show ? "" : "none";
+        });
+      });
+    });
+  </script>
 </BaseLayout>

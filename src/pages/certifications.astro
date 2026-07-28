@@ -18,31 +18,75 @@ const categories = [...new Set(certifications.map((c) => c.category))];
           </p>
         </div>
 
-        <!-- Category filters (visual only) -->
-        <div class="flex flex-wrap gap-2 mb-10">
-          <span class="px-3 py-1.5 text-sm rounded-lg bg-primary-500/10 text-primary-400 border border-primary-500/20">
+        <!-- Category filters -->
+        <div id="cert-filters" class="flex flex-wrap gap-2 mb-10">
+          <button
+            type="button"
+            data-filter="all"
+            aria-pressed="true"
+            class="cert-filter px-3 py-1.5 text-sm rounded-lg border transition-colors bg-primary-500/10 text-primary-400 border-primary-500/20"
+          >
             All ({certifications.length})
-          </span>
+          </button>
           {categories.map((cat) => (
-            <span class="px-3 py-1.5 text-sm rounded-lg text-surface-400 border border-surface-700 hover:border-surface-600 transition-colors cursor-default">
+            <button
+              type="button"
+              data-filter={cat}
+              aria-pressed="false"
+              class="cert-filter px-3 py-1.5 text-sm rounded-lg border transition-colors text-surface-400 border-surface-700 hover:border-surface-600"
+            >
               {cat} ({certifications.filter((c) => c.category === cat).length})
-            </span>
+            </button>
           ))}
         </div>
 
         <!-- Certifications Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div id="cert-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
           {certifications.map((cert) => (
-            <CertificationCard
-              title={cert.title}
-              issuer={cert.issuer}
-              date={cert.date}
-              credentialUrl={cert.credentialUrl}
-              description={cert.description}
-            />
+            <div class="cert-item" data-category={cert.category}>
+              <CertificationCard
+                title={cert.title}
+                issuer={cert.issuer}
+                date={cert.date}
+                credentialUrl={cert.credentialUrl}
+                description={cert.description}
+              />
+            </div>
           ))}
         </div>
       </div>
     </div>
   </section>
+
+  <script>
+    const filters = document.querySelectorAll<HTMLButtonElement>(".cert-filter");
+    const items = document.querySelectorAll<HTMLElement>(".cert-item");
+
+    const activeClasses = ["bg-primary-500/10", "text-primary-400", "border-primary-500/20"];
+    const inactiveClasses = ["text-surface-400", "border-surface-700", "hover:border-surface-600"];
+
+    filters.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const selected = btn.dataset.filter;
+
+        filters.forEach((f) => {
+          const active = f === btn;
+          f.setAttribute("aria-pressed", active ? "true" : "false");
+          if (active) {
+            f.classList.add(...activeClasses);
+            f.classList.remove(...inactiveClasses);
+          } else {
+            f.classList.remove(...activeClasses);
+            f.classList.add(...inactiveClasses);
+          }
+        });
+
+        items.forEach((item) => {
+          const category = item.dataset.category;
+          const show = selected === "all" || category === selected;
+          item.style.display = show ? "" : "none";
+        });
+      });
+    });
+  </script>
 </BaseLayout>

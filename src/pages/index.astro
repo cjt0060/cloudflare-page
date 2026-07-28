@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
-import Hero from "@components/Hero.astro";
+import ProfileHero from "@components/ProfileHero.astro";
 import ProjectCard from "@components/ProjectCard.astro";
 import BlogCard from "@components/BlogCard.astro";
 import CertificationCard from "@components/CertificationCard.astro";
@@ -38,11 +38,12 @@ const technologies = [
 
 <BaseLayout title="Home" description="Cloud Engineer specializing in AWS, Kubernetes, and platform engineering. Building resilient, scalable infrastructure.">
   <!-- Hero -->
-  <Hero
-    title='Building <span class="gradient-text">Cloud Infrastructure</span> That Scales'
-    subtitle="Cloud Engineer specializing in designing, building, and operating production-grade distributed systems. Passionate about platform engineering, DevOps culture, and infrastructure automation."
-    primaryCTA={{ label: "View Projects", href: "/projects" }}
-    secondaryCTA={{ label: "Read Blog", href: "/blog" }}
+  <ProfileHero
+    name="Your Name"
+    titles={["Cloud Engineer", "Platform Engineer", "DevOps Practitioner"]}
+    location="Your City, Country"
+    imageSrc="/images/profile.jpg"
+    imageAlt="Your Name"
   />
 
   <!-- Professional Summary -->

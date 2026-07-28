@@ -1,0 +1,75 @@
+---
+import GitHubIcon from "@components/Icons/GitHub.astro";
+import LinkedInIcon from "@components/Icons/LinkedIn.astro";
+import { socialUrls } from "@/config";
+
+interface Props {
+  name: string;
+  titles: string[];
+  location?: string;
+  imageSrc: string;
+  imageAlt?: string;
+}
+
+const {
+  name,
+  titles,
+  location,
+  imageSrc,
+  imageAlt = name,
+} = Astro.props;
+---
+
+<section class="section-padding relative overflow-hidden">
+  <!-- Background gradient -->
+  <div class="absolute inset-0 -z-10">
+    <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-600/10 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-primary-400/5 rounded-full blur-3xl"></div>
+  </div>
+
+  <div class="section-container flex flex-col items-center text-center">
+    <div class="w-40 h-40 sm:w-48 sm:h-48 rounded-full overflow-hidden ring-4 ring-primary-500/20 shadow-2xl animate-in">
+      <img
+        src={imageSrc}
+        alt={imageAlt}
+        class="w-full h-full object-cover"
+        loading="eager"
+      />
+    </div>
+
+    <h1 class="mt-8 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white animate-in" style="animation-delay: 0.1s">
+      {name}
+    </h1>
+
+    <p class="mt-4 text-base sm:text-lg text-primary-300 max-w-2xl animate-in" style="animation-delay: 0.15s">
+      {titles.join(" · ")}
+    </p>
+
+    {location && (
+      <p class="mt-1 text-base sm:text-lg text-primary-300 animate-in" style="animation-delay: 0.2s">
+        Based in {location}
+      </p>
+    )}
+
+    <div class="mt-6 flex items-center gap-4 animate-in" style="animation-delay: 0.25s">
+      <a
+        href={socialUrls.linkedin}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="LinkedIn"
+        class="text-primary-400 hover:text-primary-300 transition-colors"
+      >
+        <LinkedInIcon class="w-6 h-6" />
+      </a>
+      <a
+        href={socialUrls.github}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="GitHub"
+        class="text-primary-400 hover:text-primary-300 transition-colors"
+      >
+        <GitHubIcon class="w-6 h-6" />
+      </a>
+    </div>
+  </div>
+</section>

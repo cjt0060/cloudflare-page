@@ -1,8 +1,16 @@
 ---
-import { navLinks } from "@/data/navigation";
-import MenuIcon from "@/components/Icons/Menu.astro";
+import LinkedInIcon from "@/components/Icons/LinkedIn.astro";
+import ThemeToggle from "@/components/ThemeToggle.astro";
+import { socialUrls } from "@/config";
 
 const currentPath = Astro.url.pathname;
+
+const navLinks = [
+  { label: "About", href: "/about" },
+  { label: "Blog", href: "/blog" },
+  { label: "Projects", href: "/projects" },
+  { label: "Certifications", href: "/certifications" },
+];
 ---
 
 <nav class="fixed top-0 left-0 right-0 z-50 border-b border-surface-800/50 bg-surface-950/80 backdrop-blur-xl">
@@ -18,14 +26,14 @@ const currentPath = Astro.url.pathname;
         </span>
       </a>
 
-      <!-- Desktop Navigation -->
-      <div class="hidden md:flex items-center gap-1">
+      <!-- Navigation -->
+      <div class="flex items-center gap-1 sm:gap-2">
         {navLinks.map((link) => (
           <a
             href={link.href}
             data-astro-prefetch="tap"
             class:list={[
-              "px-3 py-2 text-sm rounded-md transition-colors duration-200",
+              "px-2 sm:px-3 py-2 text-sm rounded-md transition-colors duration-200",
               currentPath === link.href || (link.href !== "/" && currentPath.startsWith(link.href))
                 ? "text-primary-400 bg-primary-500/10"
                 : "text-surface-400 hover:text-white hover:bg-surface-800/50",
@@ -34,50 +42,22 @@ const currentPath = Astro.url.pathname;
             {link.label}
           </a>
         ))}
-      </div>
 
-      <!-- Mobile Menu Button -->
-      <button
-        id="mobile-menu-btn"
-        class="md:hidden p-2 text-surface-400 hover:text-white transition-colors"
-        aria-label="Toggle navigation menu"
-        aria-expanded="false"
-      >
-        <MenuIcon class="w-6 h-6" />
-      </button>
-    </div>
-  </div>
-
-  <!-- Mobile Menu -->
-  <div id="mobile-menu" class="hidden md:hidden border-t border-surface-800/50 bg-surface-950/95 backdrop-blur-xl">
-    <div class="px-4 py-4 space-y-1">
-      {navLinks.map((link) => (
         <a
-          href={link.href}
-          data-astro-prefetch="tap"
-          class:list={[
-            "block px-3 py-2 text-sm rounded-md transition-colors duration-200",
-            currentPath === link.href || (link.href !== "/" && currentPath.startsWith(link.href))
-              ? "text-primary-400 bg-primary-500/10"
-              : "text-surface-400 hover:text-white hover:bg-surface-800/50",
-          ]}
+          href={socialUrls.linkedin}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="flex items-center gap-1.5 px-2 sm:px-3 py-2 text-sm rounded-md text-surface-400 hover:text-white hover:bg-surface-800/50 transition-colors duration-200"
+          aria-label="LinkedIn"
         >
-          {link.label}
+          <LinkedInIcon class="w-4 h-4" />
+          <span class="hidden sm:inline">LinkedIn</span>
         </a>
-      ))}
+
+        <ThemeToggle label="Toggle theme" />
+      </div>
     </div>
   </div>
 </nav>
 
 <div class="h-16"></div>
-
-<script>
-  const btn = document.getElementById("mobile-menu-btn");
-  const menu = document.getElementById("mobile-menu");
-
-  btn?.addEventListener("click", () => {
-    const isOpen = !menu?.classList.contains("hidden");
-    menu?.classList.toggle("hidden");
-    btn.setAttribute("aria-expanded", String(!isOpen));
-  });
-</script>
