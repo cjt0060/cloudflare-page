@@ -36,7 +36,7 @@ import SocialIcons from "@components/SocialIcons.astro";
   <section class="relative h-96 md:h-[500px] flex items-center">
     <div class="section-container">
       <div class="max-w-3xl">
-        <h1 class="text-5xl md:text-6xl font-bold text-white tracking-tight">About Me</h1>
+        <h1 class="text-5xl md:text-6xl font-bold text-heading tracking-tight">About Me</h1>
         <p class="mt-4 text-xl text-surface-300">Cloud engineer, platform builder, automation enthusiast.</p>
       </div>
     </div>
@@ -67,7 +67,7 @@ import SocialIcons from "@components/SocialIcons.astro";
               for documentation, testing, and operational excellence.
             </p>
 
-            <h2 class="text-2xl font-bold text-white pt-6">What I Do</h2>
+            <h2 class="text-2xl font-bold text-heading pt-6">What I Do</h2>
 
             <ul class="space-y-3 text-surface-300">
               <li class="flex items-start gap-3">
@@ -112,18 +112,18 @@ import SocialIcons from "@components/SocialIcons.astro";
           <!-- Sidebar -->
           <div class="space-y-8">
             <div class="card">
-              <h3 class="text-sm font-semibold text-white mb-3">Connect</h3>
+              <h3 class="text-sm font-semibold text-heading mb-3">Connect</h3>
               <SocialIcons size="md" />
             </div>
 
             <div class="card">
-              <h3 class="text-sm font-semibold text-white mb-3">Location</h3>
+              <h3 class="text-sm font-semibold text-heading mb-3">Location</h3>
               <p class="text-sm text-surface-400">San Francisco, CA</p>
               <p class="text-sm text-surface-500 mt-1">Open to remote work</p>
             </div>
 
             <div class="card">
-              <h3 class="text-sm font-semibold text-white mb-4">Core Technologies</h3>
+              <h3 class="text-sm font-semibold text-heading mb-4">Core Technologies</h3>
               <div class="flex flex-wrap gap-2">
                 {["AWS", "Kubernetes", "Terraform", "Go", "Python", "Docker", "Linux", "GitOps"].map((tech) => (
                   <TechBadge name={tech} />

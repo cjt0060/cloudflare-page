@@ -16,7 +16,7 @@ const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
       <a
         href={currentPage === 2 ? baseUrl : `${baseUrl}/${currentPage - 1}`}
         data-astro-prefetch="tap"
-        class="px-3 py-2 text-sm rounded-lg border border-surface-700 text-surface-400 hover:text-white hover:border-surface-600 transition-colors"
+        class="px-3 py-2 text-sm rounded-lg border border-surface-700 text-surface-400 hover:text-heading hover:border-surface-600 transition-colors"
         aria-label="Previous page"
       >
         &larr; Prev
@@ -31,7 +31,7 @@ const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
           "px-3 py-2 text-sm rounded-lg transition-colors",
           page === currentPage
             ? "bg-primary-600 text-white"
-            : "border border-surface-700 text-surface-400 hover:text-white hover:border-surface-600",
+            : "border border-surface-700 text-surface-400 hover:text-heading hover:border-surface-600",
         ]}
         aria-current={page === currentPage ? "page" : undefined}
       >
@@ -43,7 +43,7 @@ const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
       <a
         href={`${baseUrl}/${currentPage + 1}`}
         data-astro-prefetch="tap"
-        class="px-3 py-2 text-sm rounded-lg border border-surface-700 text-surface-400 hover:text-white hover:border-surface-600 transition-colors"
+        class="px-3 py-2 text-sm rounded-lg border border-surface-700 text-surface-400 hover:text-heading hover:border-surface-600 transition-colors"
         aria-label="Next page"
       >
         Next &rarr;

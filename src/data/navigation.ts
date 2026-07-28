@@ -30,8 +30,3 @@ export interface FooterLink {
 }
 
 export const footerPages: FooterLink[] = navLinks.slice(0, 6);
-
-export const footerResources: FooterLink[] = [
-  { label: "RSS Feed", href: "/rss.xml" },
-  { label: "Sitemap", href: "/sitemap-index.xml" },
-];

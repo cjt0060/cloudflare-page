@@ -22,7 +22,7 @@ const navLinks = [
         <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center">
           <span class="text-white font-bold text-sm">CE</span>
         </div>
-        <span class="font-semibold text-white group-hover:text-primary-400 transition-colors hidden sm:block">
+        <span class="font-semibold text-heading group-hover:text-primary-400 transition-colors hidden sm:block">
           CloudEngineer
         </span>
       </a>
@@ -37,7 +37,7 @@ const navLinks = [
               "px-3 py-2 text-sm rounded-md transition-colors duration-200",
               currentPath === link.href || (link.href !== "/" && currentPath.startsWith(link.href))
                 ? "text-primary-400 bg-primary-500/10"
-                : "text-surface-400 hover:text-white hover:bg-surface-800/50",
+                : "text-surface-400 hover:text-heading hover:bg-surface-800/50",
             ]}
           >
             {link.label}
@@ -48,7 +48,7 @@ const navLinks = [
           href={socialUrls.linkedin}
           target="_blank"
           rel="noopener noreferrer"
-          class="flex items-center gap-1.5 px-3 py-2 text-sm rounded-md text-surface-400 hover:text-white hover:bg-surface-800/50 transition-colors duration-200"
+          class="flex items-center gap-1.5 px-3 py-2 text-sm rounded-md text-surface-400 hover:text-heading hover:bg-surface-800/50 transition-colors duration-200"
           aria-label="LinkedIn"
         >
           <LinkedInIcon class="w-4 h-4" />
@@ -58,15 +58,18 @@ const navLinks = [
         <ThemeToggle label="Toggle theme" />
       </div>
 
-      <!-- Mobile Menu Button -->
-      <button
-        id="mobile-menu-btn"
-        class="md:hidden p-2 text-surface-400 hover:text-white transition-colors"
-        aria-label="Toggle navigation menu"
-        aria-expanded="false"
-      >
-        <MenuIcon class="w-6 h-6" />
-      </button>
+      <!-- Mobile Controls -->
+      <div class="md:hidden flex items-center gap-2">
+        <ThemeToggle label="Toggle theme" />
+        <button
+          id="mobile-menu-btn"
+          class="p-2 text-surface-400 hover:text-heading transition-colors"
+          aria-label="Toggle navigation menu"
+          aria-expanded="false"
+        >
+          <MenuIcon class="w-6 h-6" />
+        </button>
+      </div>
     </div>
   </div>
 
@@ -81,7 +84,7 @@ const navLinks = [
             "block px-3 py-2 text-sm rounded-md transition-colors duration-200",
             currentPath === link.href || (link.href !== "/" && currentPath.startsWith(link.href))
               ? "text-primary-400 bg-primary-500/10"
-              : "text-surface-400 hover:text-white hover:bg-surface-800/50",
+              : "text-surface-400 hover:text-heading hover:bg-surface-800/50",
           ]}
         >
           {link.label}
@@ -92,15 +95,11 @@ const navLinks = [
         href={socialUrls.linkedin}
         target="_blank"
         rel="noopener noreferrer"
-        class="flex items-center gap-2 px-3 py-2 text-sm rounded-md text-surface-400 hover:text-white hover:bg-surface-800/50 transition-colors duration-200"
+        class="flex items-center gap-2 px-3 py-2 text-sm rounded-md text-surface-400 hover:text-heading hover:bg-surface-800/50 transition-colors duration-200"
       >
         <LinkedInIcon class="w-4 h-4" />
         LinkedIn
       </a>
-
-      <div class="px-3 pt-2">
-        <ThemeToggle label="Toggle theme" />
-      </div>
     </div>
   </div>
 </nav>

@@ -8,7 +8,7 @@ A production-quality personal portfolio website built with **Astro**, **Tailwind
 - **Blazing fast** — static site generation, optimized assets, 95+ Lighthouse scores
 - **Fully responsive** — mobile-first design across all pages
 - **Accessible** — WCAG-friendly markup, semantic HTML, focus indicators
-- **SEO optimized** — Open Graph, JSON-LD, sitemap, robots.txt, RSS
+- **SEO optimized** — Open Graph, JSON-LD, robots.txt
 - **MDX blog** — syntax highlighting, reading time, table of contents, categories/tags
 - **Reusable components** — project cards, timeline, certification badges, and more
 - **Cloudflare Pages ready** — zero-config deployment
@@ -137,7 +137,6 @@ npx wrangler pages deploy dist
 │   │   ├── certifications.astro
 │   │   ├── contact.astro
 │   │   ├── 404.astro
-│   │   ├── rss.xml.ts
 │   │   ├── robots.txt.astro
 │   │   ├── blog/
 │   │   │   ├── index.astro
@@ -183,7 +182,7 @@ draft: false
 Your content here with full MDX support...
 ```
 
-2. The post will automatically appear on the blog page and RSS feed.
+2. The post will automatically appear on the blog page.
 
 ### Add a Project
 
