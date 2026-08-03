@@ -9,14 +9,26 @@ interface Props {
 }
 
 const { title, issuer, date, credentialUrl, description, badgeColor = "primary" } = Astro.props;
+
+const issuerLogos: Record<string, string> = {
+  Microsoft: "/images/logos/microsoft.svg",
+  Google: "/images/logos/googlecloud.svg",
+  HashiCorp: "/images/logos/hashicorp.svg",
+};
+
+const logoUrl = issuerLogos[issuer];
+const logoClass = issuer === "HashiCorp" ? "w-7 h-7 object-contain invert dark:invert-0" : "w-7 h-7 object-contain";
 ---
 
 <div class="card group">
   <div class="flex items-start gap-4">
     <div class={`flex-shrink-0 w-12 h-12 rounded-lg bg-${badgeColor}-500/10 border border-${badgeColor}-500/20 flex items-center justify-center`}>
-      <svg class="w-6 h-6 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-      </svg>
+      {logoUrl
+        ? <img src={logoUrl} alt={`${issuer} logo`} class={logoClass} />
+        : <svg class="w-6 h-6 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+          </svg>
+      }
     </div>
 
     <div class="flex-1 min-w-0">

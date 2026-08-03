@@ -27,7 +27,7 @@ export const certifications: Certification[] = [
     category: "GCP",
   },
   {
-    title: "CHashiCorp Certified: Terraform Authoring and Operations Professional",
+    title: "HashiCorp Certified: Terraform Authoring and Operations Professional",
     issuer: "HashiCorp",
     date: "2026",
     credentialUrl: "https://www.credly.com/verify",
